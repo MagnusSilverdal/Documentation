@@ -1,17 +1,206 @@
-%%
-%% Author: magsil
-%% 2019-05-10
-%%
+\documentclass[11pt,a4paper]{article}
 
-% Preamble
-\documentclass[11pt]{article}
+%\usepackage[latin1]{inputenc}
+%\usepackage[T1]{fontenc}
+% För riktiga å, ä och ö:
+% Den första säger att dokumentet är kodat som ISO-8859-1, vilket är
+% brukligt i Sverige och övriga Västeuropa.
+% Den andra säger att vi ska använda fonter som är speciellt anpassade
+% för Västeuropeiska språk, bland annat kommer prickarna över "ö" lite
+% närmare o:et.
+% Det räcker ofta, men inte alltid, att bara ange den senare. Det bör
+% räcka att bara ange den första, men blir inte _fullt_ så snyggt.
 
-% Packages
+\usepackage[swedish]{babel}
+% Svensk avstavning (om den är installerad) och svenska rubriker på
+% sådant som LaTeX lägger till: sammanfattning,
+% innehållsförteckning...
+
 \usepackage{amsmath}
+% AMS är the American Mathematical Society. De har egna
+% LaTeX-kommandon. De är bra, och jag har ingen koll på vilka
+% kommandon jag använder som kommer från LaTeX och vilka som kommer
+% från AMS, så jag har alltid med den.
 
-% Document
+\usepackage{ae}
+% När du gör PDF-filer för publicering på Internet eller för att
+% skicka via e-post, bör du använda Type1-fonter (typsnitt). LaTeX
+% använder vanligen bitmapfonter, som ger utmärkt resultat i skrivare,
+% men bedrövligt på skärm. Med ae får du fonter med samma utseende som
+% ordinarie LaTeX, men som också fungerar på bildskärmar. PDF-filer
+% skapar du sedan genom att skriva "dvipdf filnamn" efter att ha kört
+% LaTeX för att få fram en "filnamn.dvi".
+%    Det finns ingen garanti för att alla fonter du använder finns med
+% i ae, och de som inte finns kommer i regel få vanliga bitmapfonter
+% istället. Men det rör sig då om enstaka stycken - kanske
+% sammanfattningen du gjort med "abstract" till exempel - eller någon
+% enstaka variabel. Det mesta blir bra.
+
+\usepackage{units}
+% Enheter ska skrivas i upprätt stil med seriffer, och separeras från
+% föregående siffror med ett tunt mellanslag - tunnare än ett
+% vanligt. Använd i texten/matteläget som: \unit[1,34]{m}
+
+\usepackage{icomma}
+% I icke-engelsk skrift används decimalkomma, i engelsk är kommatecken
+% i matteläge enbart en koordinatavskiljare. Därför sätter LaTeX i
+% vanliga fall automatiskt in ett extra mellanslag efter alla
+% kommatecken i matteläge. Detta kommando ger ett intelligent
+% kommatecken som förstår om det är decimalavskiljare eller
+% koordinatavskiljare, beroende på om det står något mellanslag
+% efter. Använd aldrig decimalpunkt i icke-engelsk skrift.
+
+\usepackage{color}
+\usepackage{graphicx}
+% Dessa behövs när man inkluderar figurer från xfig, i
+% latex+postscript format (brukar bli snyggast). Använder man vanliga
+% eps-figurer behöver man inte color-paketet. Det finns både paketet
+% "graphics" och "graphicx", med något olika syntax. Om alla bilder
+% har rätt storlek när man importerar dem behöver man inte bry sig om
+% skillnaderna.
+
+% För att kunna importera källkod
+% Användning:
+% \begin{lstlisting}
+% källkod...
+% \end{lstlisting}
+% Alternatvivt importera filen
+% \lstinputlisting{filename.java}
+
+
+
+\usepackage{listings}
+\lstset{language=Java,
+basicstyle=\scriptsize,
+breaklines=true,
+%texcl=true,
+%extendedchars=false,
+tabsize=2,
+frame=shadowbox,
+caption=Descriptive Caption Text,
+label=DescriptiveLabel,
+captionpos=b
+}
+
+
+\usepackage{bbm}
+\newcommand{\N}{\ensuremath{\mathbbm{N}}}
+\newcommand{\Z}{\ensuremath{\mathbbm{Z}}}
+\newcommand{\Q}{\ensuremath{\mathbbm{Q}}}
+\newcommand{\R}{\ensuremath{\mathbbm{R}}}
+\newcommand{\C}{\ensuremath{\mathbbm{C}}}
+% Här hittar jag på nya kommandon för att beteckna mängden av de
+% naturliga talen, heltalen, de rationella, de reella och de
+% komplexa. Vill man ha en annan font kan man i stället använda
+% \mathbb{N} och så vidare, men måste då inkludera följande rad:
+\usepackage{amssymb}
+
+\newcommand{\rd}{\ensuremath{\mathrm{d}}}
+\newcommand{\id}{\ensuremath{\,\rd}}
+% \rd står för rakt d, \id står för integral-d. Anledningen är att man
+% ska kunna skilja på d som en variabel (diameter, avstånd) och d som
+% en operator. I derivator och integraler ska d:et stå upprätt, och i
+% integraler också med ett litet mellanrum mellan d och föregående
+% uttryck.
+\newcommand{\mindre}[1]{%
+\small{#1}}
+\usepackage[pdftex]{hyperref}
 \begin{document}
 
+    \title{Programmering 2: Dokumentation m.m.}
+    \author{Magnus Silverdal}
+    \date{\today}
+    % Notera dubbla bindestreck: det ger ett lite längre streck i LaTeX.
+    %  -   ger bindestreck
+    %  --  ger längre streck, "intervallstreck": 3--5
+    %  --- ger talstreck/tankstreck. Egentligen lite längre än brukligt i
+    %      svensk typografi, om man absolut vill kan man ha -- istället.
+    %  $-$ ger minustecken
+    \maketitle
+    % Jag föredrar att ha \maketitle i direkt anslutning till titeln.
 
+    %\begin{abstract}
+    %En sammanfattning kan man ha.
+    %\end{abstract}
+
+    %\newpage
+
+    %\tableofcontents
+    %\newpage
+
+    \section{En struktur för dokumentation av ett programmeringsprojekt}
+    Det är möjligt att tänka sig en mängd olika varianter av dokumentationsmallar för ett programmeringsprojekt. Det
+    beror på projektets karaktär och på personlig preferens. Det viktiga är att ha en struktur att följa. Grunden för
+    dokumentationen är en vetenskaplig rapport. Det ska finnas en problembeskrivning (Syfte/frågeställning) där problemet
+    presenteras. Sedan kommer en beskrivning av lösningen, komplett eller i delar. Lösningen kan bestå av flödesscheman,
+    klassdiagram, algoritmbeskrivningar, pseudokod och beskrivande text. Det är viktigt att förklara tanken bakom lösningen
+    eftersom uppdragsgivaren eller kunden inte kan förväntas vara intresserad av att analysera den färdiga koden. Här ska
+    också beskrivningen av API't finnas, en redogörelse för de olilka klassernas och metodernas funktion och användning.
+    Ofta delar man in de olika delarna av lösningen i systembeskrivning och en algoritmbeskrivning. Uppdelningen är naturlig
+    eftersom det ofta är möjligt att byta algoritmer i ett befintligt system, alternativt ändra systemet (t.ex. datastrukturer)
+    utan att ändra i algoritmerna. Den andra delen av resultatet är testkörningar och fallstudier som presenteras och analyseras.
+    Som sista del i rapporten skrivs en diskusion med reflektioner över uppgiften, din lösning o.s.v.
+
+    Till detta kommer framsida, abstract, innehållsförteckning, källförteckning och bilagor i de fall detta behövs.
+    Det är också god sed att ta med en användarhandledning av något slag och den bör finnas lättillgänglig, till exempel
+    i samband med sammanfattningen eller innan lösningen. Om det har karaktär mer av en manual passar den bättre som en bilaga.
+    Givetvis ska källkod och annat data bifogas rapporten på lämpligt sätt, t.ex. som en zip-fil.
+
+    \newpage
+
+    \subsection{Struktur}
+    \begin{enumerate}
+        \item Framsida
+        \item Abstract/sammanfattning
+        \item Innehållsförteckning
+        \item Syfte/frågeställning
+        \item Teori, bakgrund
+        \item Beskrivning av lösningen
+        \begin{itemize}
+            \item[-] Användarhandledning
+            \item[-] JavaDoc/API
+            \item[-] Systembeskrivning/Klassdiagram
+            \item[-] Algoritmbeskrivningar
+        \end{itemize}
+        \item Testkörningar
+        \item Diskussion
+        \item Bilagor
+    \end{enumerate}
+
+    Väljer man att redovisa sin dokumentation med hjälp av en Wiki bör motsvarande element också finnas med men dispositionen blir lite annorlunda.
+
+
+    \section{Tips på teknik}
+    Beroende på vilket system som rapporten skrivs i behövs olika verktyg, men några är alnmängiltiga och här kommer några bra resurser att titta närmare på.
+    \subsection{Flödesdiagram/Klassdiagram}
+    Ett bra och gratis verktyg för att skapa olika typer av diagram är \href{http://dia-installer.de/index.html.en}{Dia}. Där finns möjlighet att exportera till olika format och även till \LaTeX{}-kod för de som är intresserade av det.
+    \subsection{Algoritmbeskrivningar}
+    Oavsett hur algoritmbeskrivningar är skrivna är det god sed att skriva dem i en indenterad punktlista. För att få till en punktlista i flera nivåer i \LaTeX{} fungerar inte standardversionen av \verb|enumerate| men det finns en ganska \href{https://vantr.wordpress.com/2011/12/16/multi-level-enumerated-list-in-latex/}{enkel lösning}.
+
+    \subsection{Källkod}
+    I normalfallet presenteras inte källkoden eftersom den oftast distribueras med rapporten. Ibland kan det dock finnas ett behov av att ta med en del av källkoden i rapporten. Ett enkelt sätt att återge källkod är att använda ett typsnitt med konstant teckenbredd (sk monospace). Det är ännu bättre att försöka få med indentering och formatering så bra som möjligt. I Word är en möjlighet att använda en formatmall men den bästa metoden att skapa ett objekt och sedan importera källkoden från sin editor, alternativt kopiera koden med formatering från editorn. Vad som fungerar bäst beror på vilken editor som används. I \LaTeX{} finns paketet \verb|listings| som tillåter import av källkod från en mängd olika språk. Utseendet kan styras med en rad olika inställningar och källkoden får samma status som en figur, en tabell eller liknande.
+    \subsection{Javadoc för att automatiskt generera API'n}
+    Sedan JDK 1.5 finns verktyget javadoc för att skapa dokumentation i HTML-format för klasser och metoder. Verkyget finns inbyggt i de flesta IDE och använder information i kommentarer i källkoden för att skapa ett API som liknar \href{http://docs.oracle.com/javase/7/docs/api/}{javas officiella API}. De kommentarer som ska läsas av javadoc inleds med en extra asterisk, dvs \verb|/**| istället för \verb|/*|. Titta i de automatgenererade stubbarna i Eclipse eller Netbeans för att få ett hum om formatet. Det finns ett antal taggar tillgängliga för att beskriva arvstruktur, metoders argument och returtyper och så vidare. Du bör vara bekant med \verb|@param|, \verb|@return|, \verb|@exception| och \verb|@see|. Notera också att javadoc behandlar den första meningen i en kommentar speciellt och att du bör ha en tom rad mellan texten och dina taggar. Läs mer på \href{http://www.oracle.com/technetwork/articles/java/index-137868.html}{Oracles sida om javadoc} eller i \href{https://supportweb.cs.bham.ac.uk/docs/tutorials/docsystem/build/tutorials/javadoc/javadoc.pdf}{den här} lite mer lättlästa sammanfattningen. Eftersom javadoc genererar htmlkod av kommentarerna är det helt giligt att lägga in html-kod i kommentarerna i källkoden.
+
+    Ska den HTML-kod som javadoc genererar inkluders i ett dokument finns olika alternativ. Ett är att använda en doclet som genererar API't i \href{http://doclet.github.io/}{\LaTeX-format} eller i \href{http://sourceforge.net/projects/pdfdoclet/}{pdf-format}
+
+    Eftersom det till stor del handlar om att parsa olika typer av textfiler (som java, html eller latex) finns det mängder av små hack att testa. \href{http://ditaa-addons.sourceforge.net/}{Här är ett} som skapar diagram från ascii-kod i javadoc-kommentarer.
+
+    \section{Avslutning}
+
+    Att skiva en rapport över ett programmeringsprojekt behöver inte vara speciellt krävande. Genom att använda rätt verktyg under arbetets gång kommer rapportskrivandet att bli i stort sett automatiserat. Med bra diagram och javadoc är större delen av jobbet gjort innan rapporten ens är påbörjad.
+
+    % Figurer inkluderade som eps-filer
+    %\begin{figure}\centering
+    %\includegraphics{filnamn.eps}
+    %\caption{\label{figuren} Perioden $T$ som funktion av pendellängden.}
+    %\end{figure}
+
+    % Figurer inkluderade med xfigs postscript+latex
+    %\begin{figure}\centering
+    %\input{filnamn.pstex_t}
+    %\caption{\label{finafiguren} Perioden $T$ som funktion av
+    %  pendellängden.}
+    %\end{figure}
 
 \end{document}
