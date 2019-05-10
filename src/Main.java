@@ -4,7 +4,7 @@
 public class Main {
     /**
      * Generic main-method stating the obvious
-     * @param args th commandline arguments
+     * @param args the commandline arguments
      */
     public static void main(String[] args) {
         System.out.println("Just an example");
